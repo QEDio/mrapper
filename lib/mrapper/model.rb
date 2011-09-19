@@ -39,7 +39,6 @@ module Mrapper
         :emit_value_keys        => emit_value_keys.collect(&:serializable_hash),
         :nr_rows                => nr_rows
       }
-
     end
   end
 
