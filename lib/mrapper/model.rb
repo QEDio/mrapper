@@ -2,20 +2,23 @@
 module Mrapper
   class Model
     attr_accessor :meta_information
-    attr_accessor :mr_result_rows
+    attr_accessor :result_rows
     attr_accessor :adapter
 
-    def initialize(mr_result, options = {} )
-      @adapter          = options[:adapter] || Mrapper::Adapter::Mongodb
+    def self.from_serializable_hash(hsh)
+      new(hsh, {:adapter => Mrapper::Adapter::SerializableHash})
+    end
 
-      @meta_information = @adapter.meta_information(mr_result, self)
-      @mr_result_rows  = @adapter.result_rows(mr_result, self)
+    def initialize(mr_result, options = {})
+      @adapter            = options[:adapter] || Mrapper::Adapter::Mongodb
+      @meta_information   = @adapter.meta_information(mr_result, self)
+      @result_rows     = @adapter.result_rows(mr_result, self)
     end
 
     def serializable_hash
       {
-        :meta_information         => meta_information.serializable_hash,
-        :mr_result_rows           => mr_result_rows.collect(&:serializable_hash)
+        :meta_information      => meta_information.serializable_hash,
+        :result_rows           => result_rows.collect(&:serializable_hash)
       }
     end
   end
@@ -36,6 +39,7 @@ module Mrapper
         :emit_value_keys        => emit_value_keys.collect(&:serializable_hash),
         :nr_rows                => nr_rows
       }
+
     end
   end
 
@@ -61,6 +65,18 @@ module Mrapper
     attr_accessor :value
     attr_accessor :formatted_key
     attr_accessor :formatted_value
+
+    def self.from_serializable_hash(params)
+      raise RuntimeError.new("Need the key/value pair for key: 'key'") unless params.key?(:key)
+      raise RuntimeError.new("Need the key/value pair for key: 'value'") unless params.key?(:value)
+
+      new(
+        params[:key],
+        params[:value],
+        params[:formatted_key],
+        params[:formatted_value]
+      )
+    end
 
     def initialize(key, value, formatted_key = nil, formatted_value = nil)
       @key                  = key
@@ -88,6 +104,15 @@ module Mrapper
   class MrMetaInformationBase
     attr_accessor :key
     attr_accessor :formatted_key
+
+    def self.from_serializable_hash(params)
+      raise RuntimeError.new("Need the key/value pair for key: 'key'") unless params.key?(:key)
+
+      new(
+          params[:key],
+          params[:formatted_key]
+      )
+    end
 
     def initialize(key, formatted_key = nil)
       @key = key

@@ -28,7 +28,7 @@ class TestBuilder < Test::Unit::TestCase
 
     context "looking at the map reduce rows" do
       setup do
-        @result_rows = @wrapper_model.mr_result_rows
+        @result_rows = @wrapper_model.result_rows
         @meta_information = @wrapper_model.meta_information
       end
 
@@ -58,7 +58,43 @@ class TestBuilder < Test::Unit::TestCase
         model = Mrapper::Model.new(MONGODB_EMPTY_MR_RESULT)
 
         assert_equal MODEL_MONGODB_EMPTY_MR_RESULT_METAINFORMATION, model.meta_information.serializable_hash
-        assert_equal MODEL_MONGODB_EMPTY_MR_RESULT_RESULT_ROWS, model.mr_result_rows
+        assert_equal MODEL_MONGODB_EMPTY_MR_RESULT_RESULT_ROWS, model.result_rows
+      end
+    end
+
+    context "building a new model from it's own serializable_hash" do
+      setup do
+        @wrapper_model = Mrapper::Model.new(MONGODB_MR_RESULT)
+      end
+
+      context "and looking into the metainformation" do
+        setup do
+          @meta_information       = @wrapper_model.meta_information
+          @new_meta_information   = Mrapper::Model.from_serializable_hash(@wrapper_model.serializable_hash).meta_information
+        end
+
+        should "return the same size" do
+          assert_equal @meta_information.nr_rows, @new_meta_information.nr_rows
+        end
+
+        should "return the same emit keys" do
+          assert_equal @meta_information.serializable_hash[:emit_key_keys], @new_meta_information.serializable_hash[:emit_key_keys]
+        end
+
+        should "return the same value keys" do
+          assert_equal @meta_information.serializable_hash[:emit_value_keys], @new_meta_information.serializable_hash[:emit_value_keys]
+        end
+      end
+
+      context "and looking at the result rows" do
+        setup do
+          @result_rows            = @wrapper_model.serializable_hash[:result_rows]
+          @new_result_rows        = Mrapper::Model.from_serializable_hash(@wrapper_model.serializable_hash).serializable_hash[:result_rows]
+        end
+
+        should "return the same result row data" do
+          assert_equal @result_rows, @new_result_rows
+        end
       end
     end
   end

@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 module Mrapper
   module Adapter
-    class Mongodb
+    class Mongodb < Base
       MR_RESULT     = :result
       MR_ID         = '_id'
       MR_VALUE      = 'value'
