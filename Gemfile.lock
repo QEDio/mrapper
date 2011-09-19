@@ -1,0 +1,27 @@
+PATH
+  remote: .
+  specs:
+    mrapper (0.0.1)
+      rake
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    rake (0.9.2)
+    shoulda (2.11.3)
+    simplecov (0.4.2)
+      simplecov-html (~> 0.4.4)
+    simplecov-html (0.4.5)
+    spork (0.8.5)
+    spork-testunit (0.0.5)
+      spork (>= 0.6.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  mrapper!
+  shoulda
+  simplecov
+  spork
+  spork-testunit
