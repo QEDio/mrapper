@@ -52,7 +52,7 @@ require 'test/unit'
 require 'shoulda'
 
 require 'simplecov'
-
+require 'yajl'
 require 'mrapper'
 
 SimpleCov.start

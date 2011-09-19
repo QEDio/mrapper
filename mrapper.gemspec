@@ -25,4 +25,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency('spork')
   s.add_development_dependency('spork-testunit')
   s.add_development_dependency('simplecov')
+  s.add_development_dependency('yajl-ruby')
 end

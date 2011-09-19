@@ -21,6 +21,14 @@ module Mrapper
         :result_rows           => result_rows.collect(&:serializable_hash)
       }
     end
+
+    def eql?(other)
+      serializable_hash == other.serializable_hash
+    end
+
+    def ==(other)
+      eql?(other)
+    end
   end
 
   class MrMetaInformation
@@ -40,6 +48,14 @@ module Mrapper
         :nr_rows                => nr_rows
       }
     end
+
+    def eql?(other)
+      serializable_hash == other.serializable_hash
+    end
+
+    def ==(other)
+      eql?(other)
+    end
   end
 
   class MrRow
@@ -56,6 +72,14 @@ module Mrapper
         :mr_emit_keys       => mr_emit_keys.collect(&:serializable_hash),
         :mr_emit_values     => mr_emit_values.collect(&:serializable_hash)
       }
+    end
+
+    def eql?(other)
+      serializable_hash == other.serializable_hash
+    end
+
+    def ==(other)
+      eql?(other)
     end
   end
 
@@ -92,6 +116,14 @@ module Mrapper
           :formatted_value    => formatted_value
       }
     end
+
+    def eql?(other)
+      serializable_hash == other.serializable_hash
+    end
+
+    def ==(other)
+      eql?(other)
+    end
   end
 
   class MrEmitKey < MrEmitBase
@@ -123,6 +155,14 @@ module Mrapper
         :key => key,
         :formatted_key => formatted_key
       }
+    end
+
+    def eql?(other)
+      serializable_hash == other.serializable_hash
+    end
+
+    def ==(other)
+      eql?(other)
     end
   end
 

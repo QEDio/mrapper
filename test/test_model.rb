@@ -96,6 +96,17 @@ class TestBuilder < Test::Unit::TestCase
           assert_equal @result_rows, @new_result_rows
         end
       end
+
+      context "and converting it to a json string and back to a hash" do
+        setup do
+          hsh_from_json = Yajl::Parser.parse(Yajl::Encoder.encode(@wrapper_model.serializable_hash)).symbolize_keys_rec
+          @json_wrapper_model = Mrapper::Model.from_serializable_hash(hsh_from_json)
+        end
+
+        should "return the same size" do
+
+        end
+      end
     end
   end
 end

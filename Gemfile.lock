@@ -15,6 +15,7 @@ GEM
     spork (0.8.5)
     spork-testunit (0.0.5)
       spork (>= 0.6.0)
+    yajl-ruby (1.0.0)
 
 PLATFORMS
   ruby
@@ -25,3 +26,4 @@ DEPENDENCIES
   simplecov
   spork
   spork-testunit
+  yajl-ruby
