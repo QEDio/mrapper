@@ -54,11 +54,24 @@ class TestBuilder < Test::Unit::TestCase
     end
 
     context "building a model from an empty mr result" do
-      should "return a model that works" do
-        model = Mrapper::Model.new(MONGODB_EMPTY_MR_RESULT)
+      setup do
+        @model = Mrapper::Model.new(MONGODB_EMPTY_MR_RESULT)
+      end
 
-        assert_equal MODEL_MONGODB_EMPTY_MR_RESULT_METAINFORMATION, model.meta_information.serializable_hash
-        assert_equal MODEL_MONGODB_EMPTY_MR_RESULT_RESULT_ROWS, model.result_rows
+      should "return a model that works" do
+        assert_equal MODEL_MONGODB_EMPTY_MR_RESULT_METAINFORMATION, @model.meta_information.serializable_hash
+        assert_equal MODEL_MONGODB_EMPTY_MR_RESULT_RESULT_ROWS, @model.result_rows
+      end
+
+      context "and building a new model from the empty model's serializable hash" do
+        setup do
+          @serialized_hash = @model.serializable_hash
+          puts "serialized_empty_hash: #{@serialized_hash}"
+        end
+
+        should "create a new empty model" do
+          assert_equal @model.serializable_hash, Mrapper::Model.from_serializable_hash(@serialized_hash).serializable_hash
+        end
       end
     end
 

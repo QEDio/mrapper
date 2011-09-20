@@ -5,15 +5,32 @@ module Mrapper
     attr_accessor :result_rows
     attr_accessor :adapter
 
-    def self.from_serializable_hash(hsh)
-      new(hsh, {:adapter => Mrapper::Adapter::SerializableHash})
+    def self.from_serializable_hash(data, options = {})
+      new(data, {:adapter => Mrapper::Adapter::SerializableHash}.merge(options))
     end
 
-    def initialize(mr_result, options = {})
-      @adapter            = options[:adapter] || Mrapper::Adapter::Mongodb
-      @meta_information   = @adapter.meta_information(mr_result, self)
-      @result_rows     = @adapter.result_rows(mr_result, self)
+    def initialize(data, options = {})
+      int_options         = default_options.merge(options)
+      int_data            = data
+
+      @adapter            = int_options[:adapter]
+
+      if( int_options[:convert_to_symbols])
+        # need to create a deep copy, otherwise the data would be altered externally since references
+        int_data = Marshal.load(Marshal.dump(data)).symbolize_keys_rec
+      end
+
+      @meta_information   = @adapter.meta_information(int_data, self)
+      @result_rows        = @adapter.result_rows(int_data, self)
     end
+
+    def default_options
+      {
+        :convert_to_symbols   => true,
+        :adapter              => Mrapper::Adapter::Mongodb
+      }
+    end
+
 
     def serializable_hash
       {
@@ -104,7 +121,7 @@ module Mrapper
     def initialize(key, value, formatted_key = nil, formatted_value = nil)
       @key                  = key
       @value                = value
-      @formatted_key        = formatted_key || key
+      @formatted_key        = (formatted_key || key).to_s
       @formatted_value      = formatted_value || value
     end
 
@@ -147,7 +164,7 @@ module Mrapper
 
     def initialize(key, formatted_key = nil)
       @key = key
-      @formatted_key = formatted_key || key
+      @formatted_key = (formatted_key || key).to_s
     end
 
     def serializable_hash

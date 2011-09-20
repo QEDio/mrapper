@@ -3,8 +3,8 @@ module Mrapper
   module Adapter
     class Mongodb < Base
       MR_RESULT     = :result
-      MR_ID         = '_id'
-      MR_VALUE      = 'value'
+      MR_ID         = :'_id'
+      MR_VALUE      = :value
 
       def self.identifier
         "MongoDB v2.0.0"
