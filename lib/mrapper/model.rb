@@ -103,8 +103,12 @@ module Mrapper
   class MrEmitBase
     attr_accessor :key
     attr_accessor :value
+    # TODO: those emlements should be inserted by external code and also retrieved by them,
+    # TODO: somehow like a plugin
     attr_accessor :formatted_key
     attr_accessor :formatted_value
+    attr_accessor :css
+
 
     def self.from_serializable_hash(params)
       raise RuntimeError.new("Need the key/value pair for key: 'key'") unless params.key?(:key)
@@ -113,24 +117,35 @@ module Mrapper
       new(
         params[:key],
         params[:value],
-        params[:formatted_key],
-        params[:formatted_value]
+        :formatted_key => params[:formatted_key],
+        :formatted_value => params[:formatted_value],
+        :css => params[:css]
       )
     end
 
-    def initialize(key, value, formatted_key = nil, formatted_value = nil)
+    def initialize(key, value, ext_options = {})
+      options               = default_options.merge(ext_options)
+
       @key                  = key
       @value                = value
-      @formatted_key        = (formatted_key || key).to_s
-      @formatted_value      = formatted_value || value
+      @formatted_key        = (options[:formatted_key] || key).to_s
+      @formatted_value      = options[:formatted_value] || value
+      @css                  = options[:css]
+    end
+
+    def default_options
+      {
+        :css  => {}
+      }
     end
 
     def serializable_hash
       {
-          :key                => key,
-          :value              => value,
-          :formatted_key      => formatted_key,
-          :formatted_value    => formatted_value
+        :key                => key,
+        :value              => value,
+        :formatted_key      => formatted_key,
+        :formatted_value    => formatted_value,
+        :css                => css
       }
     end
 

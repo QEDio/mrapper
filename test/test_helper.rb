@@ -76,38 +76,45 @@ unless Kernel.const_defined?("MONGODB_MR_RESULT")
           {:key=>:campaign_product,
            :value=>"blockheizkraftwerk",
            :formatted_key=>"campaign_product",
-           :formatted_value=>"blockheizkraftwerk"
+           :formatted_value=>"blockheizkraftwerk",
+           :css=>{}
           }],
         :mr_emit_values=>[
           {:key=>:conversions,
            :value=>0,
            :formatted_key=>"conversions",
-           :formatted_value=>0
+           :formatted_value=>0,
+           :css=>{}
           },
           {:key=>:cost,
            :value=>0.0,
            :formatted_key=>"cost",
-           :formatted_value=>0.0
+           :formatted_value=>0.0,
+           :css=>{}
           },
           {:key=>:impressions,
            :value=>0,
            :formatted_key=>"impressions",
-           :formatted_value=>0
+           :formatted_value=>0,
+           :css=>{}
           },
           {:key=>:cr,
            :value=>0.0,
            :formatted_key=>"cr",
-           :formatted_value=>0.0
+           :formatted_value=>0.0,
+           :css=>{}
           },
           {:key=>:cpa,
            :value=>0.0,
            :formatted_key=>"cpa",
-           :formatted_value=>0.0
+           :formatted_value=>0.0,
+           :css=>{}
           },
           {:key=>:clicks,
            :value=>0,
            :formatted_key=>"clicks",
-           :formatted_value=>0
+           :formatted_value=>0,
+           :css=>{}
           }
         ]
       }
@@ -116,21 +123,16 @@ unless Kernel.const_defined?("MONGODB_MR_RESULT")
     [{:key=>:campaign_product,
       :value=>"blockheizkraftwerk",
       :formatted_key=>"campaign_product",
-      :formatted_value=>"blockheizkraftwerk"}]
+      :formatted_value=>"blockheizkraftwerk",
+      :css=>{}}]
 
   MODEL_MONGODB_RESULT_FIRST_ROW_VALUES =
-     [{:key=>:conversions,
-        :value=>0,
-        :formatted_key=>"conversions",
-        :formatted_value=>0},
-       {:key=>:cost, :value=>0.0, :formatted_key=>"cost", :formatted_value=>0.0},
-       {:key=>:impressions,
-        :value=>0,
-        :formatted_key=>"impressions",
-        :formatted_value=>0},
-       {:key=>:cr, :value=>0.0, :formatted_key=>"cr", :formatted_value=>0.0},
-       {:key=>:cpa, :value=>0.0, :formatted_key=>"cpa", :formatted_value=>0.0},
-       {:key=>:clicks, :value=>0, :formatted_key=>"clicks", :formatted_value=>0}]
+     [{:key=>:conversions,  :value=>0,    :formatted_key=>"conversions",  :formatted_value=>0,    :css=>{}},
+      {:key=>:cost,         :value=>0.0,  :formatted_key=>"cost",         :formatted_value=>0.0,  :css=>{}},
+      {:key=>:impressions,  :value=>0,    :formatted_key=>"impressions",  :formatted_value=>0,    :css=>{}},
+      {:key=>:cr,           :value=>0.0,  :formatted_key=>"cr",           :formatted_value=>0.0,  :css=>{}},
+      {:key=>:cpa,          :value=>0.0,  :formatted_key=>"cpa",          :formatted_value=>0.0,  :css=>{}},
+      {:key=>:clicks,       :value=>0,    :formatted_key=>"clicks",       :formatted_value=>0,    :css=>{}}]
 
   MONGODB_EMPTY_MR_RESULT =
       {:result => []}

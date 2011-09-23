@@ -66,7 +66,6 @@ class TestBuilder < Test::Unit::TestCase
       context "and building a new model from the empty model's serializable hash" do
         setup do
           @serialized_hash = @model.serializable_hash
-          puts "serialized_empty_hash: #{@serialized_hash}"
         end
 
         should "create a new empty model" do
