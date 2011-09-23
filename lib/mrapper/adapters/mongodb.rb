@@ -10,20 +10,20 @@ module Mrapper
         "MongoDB v2.0.0"
       end
 
-      def self.meta_information(mr_result, model)
-        MrMetaInformation.new(mr_result, model)
+      def self.meta_information(mr_result)
+        MrMetaInformation.new(mr_result, self)
       end
 
       def self.meta_size(mr_result)
         mr_result[MR_RESULT].size
       end
 
-      def self.result_rows(mr_result, model)
+      def self.result_rows(mr_result)
         result_rows   = []
         mr_result_data = mr_result[MR_RESULT]
 
         if !mr_result_data.nil? && mr_result_data.size > 0
-          mr_result_data.each {|row| result_rows << MrRow.new(row, model) }
+          mr_result_data.each {|row| result_rows << MrRow.new(row, :adapter => self) }
         end
 
         return result_rows

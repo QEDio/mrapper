@@ -17,20 +17,20 @@ module Mrapper
         "Internal Serializable Hash v1"
       end
 
-      def self.meta_information(mr_result, model)
-        MrMetaInformation.new(mr_result, model)
+      def self.meta_information(mr_result)
+        MrMetaInformation.new(mr_result, self)
       end
 
       def self.meta_size(mr_result)
         mr_result[META_INFORMATION][:nr_rows]
       end
 
-      def self.result_rows(mr_result, model)
+      def self.result_rows(mr_result)
         result_rows = []
         data = mr_result[RESULT_ROWS]
 
         if( !data.nil? && data.size > 0)
-          result_rows = data.collect{|row| MrRow.new(row, model)}
+          result_rows = data.collect{|row| MrRow.new(row, :adapter => self)}
         end
 
         return result_rows

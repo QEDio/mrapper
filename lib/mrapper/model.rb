@@ -9,19 +9,19 @@ module Mrapper
       new(data, {:adapter => Mrapper::Adapter::SerializableHash}.merge(options))
     end
 
-    def initialize(data, options = {})
-      int_options         = default_options.merge(options)
-      int_data            = data
+    def initialize(ext_data, ext_options = {})
+      options         = default_options.merge(ext_options)
+      data            = ext_data
 
-      @adapter            = int_options[:adapter]
+      @adapter        = options[:adapter]
 
-      if( int_options[:convert_to_symbols])
+      if( options[:convert_to_symbols])
         # need to create a deep copy, otherwise the data would be altered externally since references
-        int_data = Marshal.load(Marshal.dump(data)).symbolize_keys_rec
+        data = Marshal.load(Marshal.dump(ext_data)).symbolize_keys_rec
       end
 
-      @meta_information   = @adapter.meta_information(int_data, self)
-      @result_rows        = @adapter.result_rows(int_data, self)
+      @meta_information   = adapter.meta_information(data)
+      @result_rows        = adapter.result_rows(data)
     end
 
     def default_options
@@ -30,7 +30,6 @@ module Mrapper
         :adapter              => Mrapper::Adapter::Mongodb
       }
     end
-
 
     def serializable_hash
       {
@@ -52,10 +51,10 @@ module Mrapper
     attr_accessor :emit_key_keys, :emit_value_keys
     attr_accessor :nr_rows
 
-    def initialize(mr_result, model)
-      @emit_key_keys      = model.adapter.meta_emit_key_keys(mr_result)
-      @emit_value_keys    = model.adapter.meta_emit_value_keys(mr_result)
-      @nr_rows            = model.adapter.meta_size(mr_result)
+    def initialize(mr_result, adapter)
+      @emit_key_keys      = adapter.meta_emit_key_keys(mr_result)
+      @emit_value_keys    = adapter.meta_emit_value_keys(mr_result)
+      @nr_rows            = adapter.meta_size(mr_result)
     end
 
     def serializable_hash
@@ -76,12 +75,20 @@ module Mrapper
   end
 
   class MrRow
-    attr_accessor :mr_emit_keys
-    attr_accessor :mr_emit_values
+    attr_accessor :mr_emit_keys, :mr_emit_values, :adapter
 
-    def initialize(row, model)
-      @mr_emit_keys       = model.adapter.emit_key_keys(row)
-      @mr_emit_values     = model.adapter.emit_value_keys(row)
+    def initialize(row, ext_options = {})
+      options             = default_options.merge(ext_options)
+
+      @adapter            = options[:adapter]
+      @mr_emit_keys       = adapter.emit_key_keys(row)
+      @mr_emit_values     = adapter.emit_value_keys(row)
+    end
+
+    def default_options
+      {
+        :adapter              => Mrapper::Adapter::Mongodb
+      }
     end
 
     def serializable_hash
