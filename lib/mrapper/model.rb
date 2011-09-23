@@ -137,8 +137,8 @@ module Mrapper
       @value                = value
       @formatted_key        = (options[:formatted_key] || key).to_s
       @formatted_value      = options[:formatted_value] || value
-      raise Exception.new("buuuuuh") if options[:css].nil?
-      @css                  = options[:css]
+      # TODO: is there a better way to avoid getting nil for @css if :css => nil is passed in ext_options?
+      @css                  = options[:css] || default_options[:css]
     end
 
     def default_options
