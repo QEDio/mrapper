@@ -133,7 +133,7 @@ module Mrapper
     def initialize(key, value, ext_options = {})
       options               = default_options.merge(ext_options)
 
-      @key                  = key
+      @key                  = key.to_s.to_sym
       @value                = value
       @formatted_key        = (options[:formatted_key] || key).to_s
       @formatted_value      = options[:formatted_value] || value
@@ -186,7 +186,7 @@ module Mrapper
     end
 
     def initialize(key, formatted_key = nil)
-      @key = key
+      @key = key.to_s.to_sym
       @formatted_key = (formatted_key || key).to_s
     end
 
