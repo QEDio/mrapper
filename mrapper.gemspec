@@ -20,10 +20,12 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_dependency 'rake'
+  s.add_dependency 'bson_ext'
+  s.add_dependency 'bzip2-ruby'
+  s.add_dependency 'yajl-ruby'
 
-  s.add_development_dependency('shoulda')
-  s.add_development_dependency('spork')
-  s.add_development_dependency('spork-testunit')
-  s.add_development_dependency('simplecov')
-  s.add_development_dependency('yajl-ruby')
+  s.add_development_dependency 'shoulda'
+  s.add_development_dependency 'spork'
+  s.add_development_dependency 'spork-testunit'
+  s.add_development_dependency 'simplecov'
 end

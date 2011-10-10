@@ -17,7 +17,7 @@ module Mrapper
 
       if( options[:convert_to_symbols])
         # need to create a deep copy, otherwise the data would be altered externally since references
-        data = Marshal.load(Marshal.dump(ext_data)).symbolize_keys_rec
+        data = Marshal.load(Marshal.dump(data)).symbolize_keys_rec
       end
 
       @meta_information   = adapter.meta_information(data)

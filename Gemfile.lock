@@ -2,11 +2,16 @@ PATH
   remote: .
   specs:
     mrapper (0.0.1)
+      bson_ext
+      bzip2-ruby
       rake
+      yajl-ruby
 
 GEM
   remote: http://rubygems.org/
   specs:
+    bson_ext (1.4.0)
+    bzip2-ruby (0.2.7)
     multi_json (1.0.3)
     rake (0.9.2)
     shoulda (2.11.3)
@@ -28,4 +33,3 @@ DEPENDENCIES
   simplecov
   spork
   spork-testunit
-  yajl-ruby

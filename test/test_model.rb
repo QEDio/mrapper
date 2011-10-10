@@ -2,7 +2,7 @@
 require File.dirname(__FILE__) + '/test_helper.rb'
 
 # TODO: test each Model.rb class on its own
-class TestBuilder < Test::Unit::TestCase
+class TestModel < Test::Unit::TestCase
   context "building a model from a mongdob mapreduce result" do
     setup do
       @wrapper_model = Mrapper::Model.new(MONGODB_MR_RESULT)
