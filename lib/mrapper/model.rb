@@ -105,6 +105,8 @@ module Mrapper
     def ==(other)
       eql?(other)
     end
+
+    
   end
 
   class MrEmitBase
@@ -115,6 +117,7 @@ module Mrapper
     attr_accessor :formatted_key
     attr_accessor :formatted_value
     attr_accessor :css
+    #attr_accessor :derived_values
 
 
     def self.from_serializable_hash(params)
@@ -124,9 +127,10 @@ module Mrapper
       new(
         params[:key],
         params[:value],
-        :formatted_key => params[:formatted_key],
-        :formatted_value => params[:formatted_value],
-        :css => params[:css]
+        :formatted_key      => params[:formatted_key],
+        :formatted_value    => params[:formatted_value],
+        :css                => params[:css],
+        #:derived_values     => params[:derived_values]
       )
     end
 
@@ -139,11 +143,13 @@ module Mrapper
       @formatted_value      = options[:formatted_value] || value
       # TODO: is there a better way to avoid getting nil for @css if :css => nil is passed in ext_options?
       @css                  = options[:css] || default_options[:css]
+      #@derived_values       = options[:derived_values] || default_options[:derived_values]
     end
 
     def default_options
       {
-        :css  => {}
+        :css            => {},
+        #:derived_values => {}
       }
     end
 
@@ -153,7 +159,8 @@ module Mrapper
         :value              => value,
         :formatted_key      => formatted_key,
         :formatted_value    => formatted_value,
-        :css                => css
+        :css                => css,
+        #:derived_values     => derived_values
       }
     end
 
