@@ -86,7 +86,7 @@ module Mrapper
       options             = default_options.merge(ext_options)
 
       @adapter            = options[:adapter]
-      @bollinger          = false
+      @bollinger          = ''
       @mr_emit_keys       = adapter.emit_key_keys(row)
       @mr_emit_values     = adapter.emit_value_keys(row)
     end
