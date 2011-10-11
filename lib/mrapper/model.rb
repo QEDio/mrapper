@@ -80,7 +80,7 @@ module Mrapper
   end
 
   class MrRow
-    attr_accessor :mr_emit_keys, :mr_emit_values, :adapter
+    attr_accessor :mr_emit_keys, :mr_emit_values, :adapter, :bollinger
 
     def initialize(row, ext_options = {})
       options             = default_options.merge(ext_options)
