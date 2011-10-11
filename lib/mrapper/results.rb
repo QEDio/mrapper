@@ -5,8 +5,8 @@ module Mrapper
   class Results
     attr_accessor :results
 
-    def self.from_serializable_hash(hsh)
-      new(hsh)
+    def self.from_serializable_hash(hsh, options = {})
+      new(hsh, options)
     end
 
     def self.from_json(json)
