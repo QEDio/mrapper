@@ -15,18 +15,23 @@ module Mrapper
 
       @adapter        = options[:adapter]
 
-      if( options[:convert_to_symbols])
-        # need to create a deep copy, otherwise the data would be altered externally since references
-        data = Marshal.load(Marshal.dump(data)).symbolize_keys_rec
+      if( !data.nil? && options[:deep_copy] )
+        data = Marshal.load(Marshal.dump(data))
       end
-
+      
+      if( options[:convert_to_symbols])
+        data = data.symbolize_keys_rec
+      end
+      
       @meta_information   = adapter.meta_information(data)
       @result_rows        = adapter.result_rows(data)
     end
 
+    # default setting are the slowest, but safest
     def default_options
       {
         :convert_to_symbols   => true,
+        :deep_copy            => true,
         :adapter              => Mrapper::Adapter::Mongodb
       }
     end

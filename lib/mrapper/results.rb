@@ -23,17 +23,24 @@ module Mrapper
 
       @results      = options[:results]
 
-      if( !data.nil? && options[:convert_to_symbols] )
-        # need to create a deep copy, otherwise the data would be altered externally since references
-        data = Marshal.load(Marshal.dump(data)).symbolize_keys_rec
+      # deep copy requested,
+      # ATTENTION: This will be slow!
+      if( !data.nil? && options[:deep_copy] )
+        data = Marshal.load(Marshal.dump(data))
       end
 
-      add_results(data[:results]) if( data && data[:results] )
+      if( !data.nil? && options[:convert_to_symbols] )
+        data = data.symbolize_keys_rec
+      end
+
+      add_results(data[:results], options) if( data && data[:results] )
     end
 
+    # default setting are the slowest, but safest
     def default_options
       {
         :convert_to_symbols   => true,
+        :deep_copy            => true,
         :results      => []
       }
     end
@@ -48,21 +55,35 @@ module Mrapper
       Yajl::Encoder.encode(serializable_hash)
     end
 
-    def add_results(results)
+    def add_results(results, ext_options)
+      options       = default_add_results_options.merge(extract_options_for_add_results(ext_options))
+
       Array(results).each do |result|
-        add_result(result)
+        add_result(result, options)
       end
     end
 
-    def add_result(result)
+    def default_add_results_options
+      {
+        :convert_to_symbols => false,
+        :deep_copy          => false
+      }
+    end
 
+    # yeah, currently just nothing, probably overkill again
+    def extract_options_for_add_results(ext_options)
+      options = {}
+
+      return options
+    end
+
+    def add_result(result, options)
       unless( result.nil? )
         if( result.is_a?(Model) )
           results << result
         elsif( result.is_a?(Hash) )
-          results << Model.from_serializable_hash(result)
+          results << Model.from_serializable_hash(result, options)
         else
-          puts "result: #{result.inspect}"
           raise Exception.new("I'm sorry but I don't know how to deserialize the datatype #{result.class} for result")
         end
       end

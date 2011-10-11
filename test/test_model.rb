@@ -121,4 +121,20 @@ class TestModel < Test::Unit::TestCase
       end
     end
   end
+
+  context "building a model from a mongdob mapreduce result without deep copy" do
+    setup do
+      @wrapper_model = Mrapper::Model.new(MONGODB_MR_RESULT, :deep_copy => false)
+    end
+
+    context "looking at the metainformation" do
+      setup do
+        @meta_information = @wrapper_model.meta_information
+      end
+
+      should "have the correct row size" do
+        assert_equal 22, @meta_information.nr_rows
+      end
+    end
+  end
 end
