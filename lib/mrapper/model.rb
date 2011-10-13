@@ -4,6 +4,7 @@ module Mrapper
     attr_accessor :meta_information
     attr_accessor :result_rows
     attr_accessor :adapter
+    attr_accessor :id
 
     def self.from_serializable_hash(data, options = {})
       new(data, {:adapter => Mrapper::Adapter::SerializableHash}.merge(options))
@@ -14,6 +15,7 @@ module Mrapper
       data            = ext_data
 
       @adapter        = options[:adapter]
+      @id             = options[:id]
 
       if( !data.nil? && options[:deep_copy] )
         data = Marshal.load(Marshal.dump(data))
@@ -32,14 +34,16 @@ module Mrapper
       {
         :convert_to_symbols   => true,
         :deep_copy            => true,
-        :adapter              => Mrapper::Adapter::Mongodb
+        :adapter              => Mrapper::Adapter::Mongodb,
+        :id                   => nil
       }
     end
 
     def serializable_hash
       {
         :meta_information      => meta_information.serializable_hash,
-        :result_rows           => result_rows.collect(&:serializable_hash)
+        :result_rows           => result_rows.collect(&:serializable_hash),
+        :id                    => id
       }
     end
 

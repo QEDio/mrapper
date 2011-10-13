@@ -6,6 +6,11 @@ class TestModel < Test::Unit::TestCase
   context "building a model from a mongdob mapreduce result" do
     setup do
       @wrapper_model = Mrapper::Model.new(MONGODB_MR_RESULT)
+      @wrapper_model.id = "abc"
+    end
+
+    should "have the correct id" do
+      assert_equal "abc", @wrapper_model.id
     end
 
     context "looking at the metainformation" do
@@ -77,6 +82,7 @@ class TestModel < Test::Unit::TestCase
     context "building a new model from it's own serializable_hash" do
       setup do
         @wrapper_model = Mrapper::Model.new(MONGODB_MR_RESULT)
+        @wrapper_model.id = "abc"
       end
 
       context "and looking into the metainformation" do
