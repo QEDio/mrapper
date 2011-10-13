@@ -55,7 +55,7 @@ module Mrapper
       Yajl::Encoder.encode(serializable_hash)
     end
 
-    def add_results(results, ext_options)
+    def add_results(results, ext_options = {})
       options       = default_add_results_options.merge(extract_options_for_add_results(ext_options))
 
       Array(results).each do |result|
