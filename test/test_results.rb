@@ -36,4 +36,21 @@ class TestResults < Test::Unit::TestCase
       end
     end
   end
+
+  context "the result model can add itself to it's list of results and" do
+    setup do
+      @wm = Mrapper::Model.new(MONGODB_MR_RESULT)
+      #@wm.id = "abc"
+
+      @r1 = Mrapper::Results.new()
+      @r1.add_results(@wm)
+
+      @r2 = Mrapper::Results.new()
+      @r2.add_results(@r1)
+    end
+
+    should "should de/serialize perfectly" do
+      assert_equal @r2, Mrapper::Results.from_serializable_hash(@r2.serializable_hash)
+    end
+  end
 end

@@ -13,6 +13,10 @@ class TestModel < Test::Unit::TestCase
       assert_equal "abc", @wrapper_model.id
     end
 
+    should "de/serialize correctly" do
+      assert_equal @wrapper_model, Mrapper::Model.from_serializable_hash(@wrapper_model.serializable_hash)
+    end
+
     context "looking at the metainformation" do
       setup do
         @meta_information = @wrapper_model.meta_information

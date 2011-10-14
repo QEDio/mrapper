@@ -47,7 +47,8 @@ module Mrapper
 
     def serializable_hash
       {
-        :results    => results.collect(&:serializable_hash)
+        :results    => results.collect(&:serializable_hash),
+        :type       => self.class.to_s
       }
     end
 
@@ -81,8 +82,14 @@ module Mrapper
       unless( result.nil? )
         if( result.is_a?(Model) )
           results << result
+        elsif( result.is_a?(Results) )
+          results << result
         elsif( result.is_a?(Hash) )
-          results << Model.from_serializable_hash(result, options)
+          if( result[:type].eql?(self.class.to_s))
+            results << self.class.from_serializable_hash(result)
+          else
+            results << Model.from_serializable_hash(result, options)
+          end
         else
           raise Exception.new("I'm sorry but I don't know how to deserialize the datatype #{result.class} for result")
         end

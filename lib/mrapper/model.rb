@@ -15,7 +15,7 @@ module Mrapper
       data            = ext_data
 
       @adapter        = options[:adapter]
-      @id             = options[:id]
+      @id             = data[:id] || data["id"]
 
       if( !data.nil? && options[:deep_copy] )
         data = Marshal.load(Marshal.dump(data))
