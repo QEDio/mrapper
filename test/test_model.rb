@@ -85,8 +85,17 @@ class TestModel < Test::Unit::TestCase
 
     context "building a new model from it's own serializable_hash" do
       setup do
-        @wrapper_model = Mrapper::Model.new(MONGODB_MR_RESULT)
-        @wrapper_model.id = "abc"
+        @wrapper_model            = Mrapper::Model.new(MONGODB_MR_RESULT)
+        @wrapper_model.id         = "abc"
+        @wrapper_model.sub_id     = "xyz"
+      end
+
+      should "set the id" do
+        assert_equal "abc", @wrapper_model.id
+      end
+
+      should "set the sub_id" do
+        assert_equal "xyz", @wrapper_model.sub_id
       end
 
       context "and looking into the metainformation" do

@@ -4,6 +4,8 @@ module Mrapper
     attr_accessor :meta_information
     attr_accessor :result_rows
     attr_accessor :adapter
+    # sub_id is the part thats different for each model with the same general query
+    attr_accessor :sub_id
     attr_accessor :id
 
     def self.from_serializable_hash(data, options = {})
@@ -16,6 +18,7 @@ module Mrapper
 
       @adapter        = options[:adapter]
       @id             = data[:id] || data["id"]
+      @sub_id         = data[:sub_id] || data["sub_id"]
 
       if( !data.nil? && options[:deep_copy] )
         data = Marshal.load(Marshal.dump(data))
@@ -35,7 +38,8 @@ module Mrapper
         :convert_to_symbols   => true,
         :deep_copy            => true,
         :adapter              => Mrapper::Adapter::Mongodb,
-        :id                   => nil
+        :id                   => nil,
+        :sub_id               => nil
       }
     end
 
@@ -43,7 +47,8 @@ module Mrapper
       {
         :meta_information      => meta_information.serializable_hash,
         :result_rows           => result_rows.collect(&:serializable_hash),
-        :id                    => id
+        :id                    => id,
+        :sub_id                => sub_id
       }
     end
 

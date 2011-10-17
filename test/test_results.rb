@@ -5,7 +5,17 @@ require File.dirname(__FILE__) + '/test_helper.rb'
 class TestResults < Test::Unit::TestCase
   context "building an empty results-object" do
     setup do
-      @results = Mrapper::Results.new()
+      @results          = Mrapper::Results.new()
+      @results.id       = "abc"
+      @results.sub_id   = "xyz"
+    end
+
+    should "set the id" do
+      assert_equal "abc", @results.id
+    end
+
+    should "set the sub_id" do
+      assert_equal "xyz", @results.sub_id
     end
 
     should "have no models within" do
@@ -39,8 +49,9 @@ class TestResults < Test::Unit::TestCase
 
   context "the result model can add itself to it's list of results and" do
     setup do
-      @wm = Mrapper::Model.new(MONGODB_MR_RESULT)
-      #@wm.id = "abc"
+      @wm         = Mrapper::Model.new(MONGODB_MR_RESULT)
+      @wm.id      = "abc"
+      @wm.sub_id  = "xyz"
 
       @r1 = Mrapper::Results.new()
       @r1.add_results(@wm)

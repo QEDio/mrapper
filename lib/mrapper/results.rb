@@ -4,6 +4,9 @@ require 'bzip2'
 module Mrapper
   class Results
     attr_accessor :results
+    attr_accessor :id
+    # sub_id is the part thats different for each model with the same general query
+    attr_accessor :sub_id
 
     def self.from_serializable_hash(hsh, options = {})
       new(hsh, options)
@@ -21,7 +24,10 @@ module Mrapper
       options       = default_options.merge(ext_options)
       data          = ext_data
 
+      # initialize with default values
       @results      = options[:results]
+      @id           = options[:id]
+      @sub_id       = options[:sub_id]
 
       # deep copy requested,
       # ATTENTION: This will be slow!
@@ -33,7 +39,12 @@ module Mrapper
         data = data.symbolize_keys_rec
       end
 
-      add_results(data[:results], options) if( data && data[:results] )
+      if( data )
+        add_results( data[:results]||data["results"], options )  if( data[:results] || data["results"] )
+
+        @id             = data[:id] || data["id"]
+        @sub_id         = data[:sub_id] || data["sub_id"]
+      end
     end
 
     # default setting are the slowest, but safest
@@ -48,6 +59,8 @@ module Mrapper
     def serializable_hash
       {
         :results    => results.collect(&:serializable_hash),
+        :id         => id,
+        :sub_id     => sub_id,
         :type       => self.class.to_s
       }
     end
