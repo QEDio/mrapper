@@ -64,4 +64,18 @@ class TestResults < Test::Unit::TestCase
       assert_equal @r2, Mrapper::Results.from_serializable_hash(@r2.serializable_hash)
     end
   end
+
+  context "build the result model from hash params" do
+    setup do
+      @r       = Mrapper::Results.new(:id => "abc", :sub_id => "xyz")
+    end
+
+    should "return the correct value for id" do
+      assert_equal "abc", @r.id
+    end
+
+    should "return the correct value for sub_id" do
+      assert_equal "xyz", @r.sub_id
+    end
+  end
 end

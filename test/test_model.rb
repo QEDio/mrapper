@@ -134,8 +134,8 @@ class TestModel < Test::Unit::TestCase
           @json_wrapper_model = Mrapper::Model.from_serializable_hash(hsh_from_json)
         end
 
-        should "return the same size" do
-
+        should "be correct" do
+          assert_equal @wrapper_model, @json_wrapper_model
         end
       end
     end
