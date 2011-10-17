@@ -17,8 +17,10 @@ module Mrapper
       data            = ext_data
 
       @adapter        = options[:adapter]
-      @id             = data[:id] || data["id"]
-      @sub_id         = data[:sub_id] || data["sub_id"]
+      # TODO: this is such a crap
+      # TODO: this all needs to be much better suited for paramter passing
+      @id             = data[:id] || data["id"] || options[:id] || options["id"]
+      @sub_id         = data[:sub_id] || data["sub_id"] || options[:sub_id] || options["sub_id"]
 
       if( !data.nil? && options[:deep_copy] )
         data = Marshal.load(Marshal.dump(data))
