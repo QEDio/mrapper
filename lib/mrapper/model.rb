@@ -98,8 +98,8 @@ module Mrapper
 
       @adapter            = options[:adapter]
       # this is not in the spirit of adapters
-      if( row[:bollinger] && !row[:bollinger].nil? )
-        @bollinger          = row[:bollinger]
+      if( (row[:bollinger] || row["bollinger"]) && !(row[:bollinger].nil?||row["bollinger"].nil?) )
+        @bollinger = row[:bollinger] || row["bollinger"]
       else
         @bollinger = options[:bollinger]
       end
@@ -110,7 +110,7 @@ module Mrapper
     def default_options
       {
         :adapter              => Mrapper::Adapter::Mongodb,
-        :bollinger            => "xy"
+        :bollinger            => ""
       }
     end
 
