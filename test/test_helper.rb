@@ -116,7 +116,8 @@ unless Kernel.const_defined?("MONGODB_MR_RESULT")
            :formatted_value=>0,
            :css=>{}
           }
-        ]
+        ],
+      :bollinger=>""
       }
 
   MODEL_MONGODB_RESULT_FIRST_ROW_KEYS =

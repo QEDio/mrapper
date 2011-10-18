@@ -98,14 +98,19 @@ module Mrapper
 
       @adapter            = options[:adapter]
       # this is not in the spirit of adapters
-      @bollinger          = row[:bollinger] rescue ''
+      if( row[:bollinger] && !row[:bollinger].nil? )
+        @bollinger          = row[:bollinger]
+      else
+        @bollinger = options[:bollinger]
+      end
       @mr_emit_keys       = adapter.emit_key_keys(row)
       @mr_emit_values     = adapter.emit_value_keys(row)
     end
 
     def default_options
       {
-        :adapter              => Mrapper::Adapter::Mongodb
+        :adapter              => Mrapper::Adapter::Mongodb,
+        :bollinger            => ''
       }
     end
 
