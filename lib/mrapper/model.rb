@@ -97,7 +97,8 @@ module Mrapper
       options             = default_options.merge(ext_options)
 
       @adapter            = options[:adapter]
-      @bollinger          = ''
+      # this is not in the spirit of adapters
+      @bollinger          = row[:bollinger] rescue nil
       @mr_emit_keys       = adapter.emit_key_keys(row)
       @mr_emit_values     = adapter.emit_value_keys(row)
     end
@@ -111,7 +112,8 @@ module Mrapper
     def serializable_hash
       {
         :mr_emit_keys       => mr_emit_keys.collect(&:serializable_hash),
-        :mr_emit_values     => mr_emit_values.collect(&:serializable_hash)
+        :mr_emit_values     => mr_emit_values.collect(&:serializable_hash),
+        :bollinger          => bollinger
       }
     end
 
