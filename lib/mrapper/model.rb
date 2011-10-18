@@ -110,7 +110,7 @@ module Mrapper
     def default_options
       {
         :adapter              => Mrapper::Adapter::Mongodb,
-        :bollinger            => ''
+        :bollinger            => "xy"
       }
     end
 
