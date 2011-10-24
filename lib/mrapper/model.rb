@@ -61,6 +61,25 @@ module Mrapper
     def ==(other)
       eql?(other)
     end
+
+
+    def merge!(other, ext_columns)
+      columns = Array(ext_columns)
+      raise Exception.new("No merge can be performed if the columns to merge are unknown!") if columns.size == 0
+      
+      other.result_rows.each do |row|
+        my_row = get_row(row, columns)
+        next if my_row.nil?
+        my_row.merge!(row, columns)
+      end
+
+    end
+
+    def get_row(row, columns = nil)
+      eql_rows = result_rows.select{|r| r.eql1?(row, columns)}
+      raise Exception.new("This cant be, there are #{eql_rows.size} that are eql to the provided row! Don't toy with me") if eql_rows.size > 1
+      eql_rows[0]
+    end
   end
 
   class MrMetaInformation
@@ -130,7 +149,63 @@ module Mrapper
       eql?(other)
     end
 
-    
+    def merge!(other, columns)
+      mr_emit_values.each do |column|
+        if columns.include?(column.key)
+          other_column = other.get_emit_value(column)
+          column.value = other_column.value
+        end
+      end
+    end
+
+    # TODO: name
+    # returns true if:
+    #   * all columns are present, if columns is nil all columns must match, if empty arry, non must must match
+    #   * the mr_emit_keys are the same
+    def eql1?(other, columns = nil)
+      equal = true
+
+      other.mr_emit_keys.each do |emit_key|
+        equal = has_emit_key?(emit_key)
+        break if equal == false
+      end
+
+      if equal
+        # every column must be present!
+        if columns.nil?
+          columns = mr_emit_values.map{|ev|ev.key}
+        end
+
+        other.mr_emit_values.each do |emit_value|
+          next if !columns.include?(emit_value.key)
+          #puts "key: #{emit_value.key}"
+          equal = has_emit_value?(emit_value)
+          break if equal == false
+        end
+      end
+
+      equal
+    end
+
+    def get_emit_key(emit_key)
+      emit_key = mr_emit_keys.select{|ek| ek.eql1?(emit_key)}
+      raise Exception.new("Boy this is not allowed. There are #{emit_key.size} emit_keys for emit_key #{emit_key.inspect}") if emit_key.size > 1
+      return emit_key[0]
+    end
+
+    def has_emit_key?(emit_key)
+      !get_emit_key(emit_key).nil?
+    end
+
+    def get_emit_value(emit_value)
+      emit_value = mr_emit_values.select{|ev| ev.eql1?(emit_value)}
+      raise Exception.new("Boy this is not allowed. There are #{emit_value.size} emit_values for emit_value #{emit_value.inspect}") if emit_value.size > 1
+      return emit_value[0]
+    end
+
+    def has_emit_value?(emit_value)
+      !get_emit_value(emit_value).nil?
+    end
   end
 
   class MrEmitBase
@@ -195,12 +270,19 @@ module Mrapper
     def ==(other)
       eql?(other)
     end
+
+    def eql1?(other)
+      other.key.eql?(key) && other.value.eql?(value)
+    end
   end
 
   class MrEmitKey < MrEmitBase
   end
 
   class MrEmitValue < MrEmitBase
+    def eql1?(other)
+      other.key.eql?(key)
+    end
   end
 
   class MrMetaInformationBase

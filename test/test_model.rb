@@ -5,21 +5,28 @@ require File.dirname(__FILE__) + '/test_helper.rb'
 class TestModel < Test::Unit::TestCase
   context "building a model from a mongdob mapreduce result" do
     setup do
-      @wrapper_model = Mrapper::Model.new(MONGODB_MR_RESULT)
-      @wrapper_model.id = "abc"
+      @wm_r1_1      = Mrapper::Model.new(MONGODB_MR_RESULT1)
+      @wm_r1_2      = Mrapper::Model.new(MONGODB_MR_RESULT1)
+      @wm_r1_1.id   = "abc"
+      @wm_r1_2.id   = "abc"
     end
 
     should "have the correct id" do
-      assert_equal "abc", @wrapper_model.id
+      assert_equal "abc", @wm_r1_1.id
     end
 
     should "de/serialize correctly" do
-      assert_equal @wrapper_model, Mrapper::Model.from_serializable_hash(@wrapper_model.serializable_hash)
+      assert_equal @wm_r1_1, Mrapper::Model.from_serializable_hash(@wm_r1_1.serializable_hash)
     end
+
+    should "create the same models from the same Mongodb MR Results" do
+      assert_equal @wm_r1_1, @wm_r1_2
+    end
+
 
     context "looking at the metainformation" do
       setup do
-        @meta_information = @wrapper_model.meta_information
+        @meta_information = @wm_r1_1.meta_information
       end
     
       should "have the correct row size" do
@@ -37,8 +44,8 @@ class TestModel < Test::Unit::TestCase
 
     context "looking at the map reduce rows" do
       setup do
-        @result_rows = @wrapper_model.result_rows
-        @meta_information = @wrapper_model.meta_information
+        @result_rows = @wm_r1_1.result_rows
+        @meta_information = @wm_r1_1.meta_information
       end
 
       should "have the same number of rows as mentionend in the meta-information" do
@@ -85,23 +92,23 @@ class TestModel < Test::Unit::TestCase
 
     context "building a new model from it's own serializable_hash" do
       setup do
-        @wrapper_model            = Mrapper::Model.new(MONGODB_MR_RESULT)
-        @wrapper_model.id         = "abc"
-        @wrapper_model.sub_id     = "xyz"
+        @wm_r1_1            = Mrapper::Model.new(MONGODB_MR_RESULT1)
+        @wm_r1_1.id         = "abc"
+        @wm_r1_1.sub_id     = "xyz"
       end
 
       should "set the id" do
-        assert_equal "abc", @wrapper_model.id
+        assert_equal "abc", @wm_r1_1.id
       end
 
       should "set the sub_id" do
-        assert_equal "xyz", @wrapper_model.sub_id
+        assert_equal "xyz", @wm_r1_1.sub_id
       end
 
       context "and looking into the metainformation" do
         setup do
-          @meta_information       = @wrapper_model.meta_information
-          @new_meta_information   = Mrapper::Model.from_serializable_hash(@wrapper_model.serializable_hash).meta_information
+          @meta_information       = @wm_r1_1.meta_information
+          @new_meta_information   = Mrapper::Model.from_serializable_hash(@wm_r1_1.serializable_hash).meta_information
         end
 
         should "return the same size" do
@@ -119,8 +126,8 @@ class TestModel < Test::Unit::TestCase
 
       context "and looking at the result rows" do
         setup do
-          @result_rows            = @wrapper_model.serializable_hash[:result_rows]
-          @new_result_rows        = Mrapper::Model.from_serializable_hash(@wrapper_model.serializable_hash).serializable_hash[:result_rows]
+          @result_rows            = @wm_r1_1.serializable_hash[:result_rows]
+          @new_result_rows        = Mrapper::Model.from_serializable_hash(@wm_r1_1.serializable_hash).serializable_hash[:result_rows]
         end
 
         should "return the same result row data" do
@@ -130,12 +137,37 @@ class TestModel < Test::Unit::TestCase
 
       context "and converting it to a json string and back to a hash" do
         setup do
-          hsh_from_json = Yajl::Parser.parse(Yajl::Encoder.encode(@wrapper_model.serializable_hash)).symbolize_keys_rec
+          hsh_from_json = Yajl::Parser.parse(Yajl::Encoder.encode(@wm_r1_1.serializable_hash)).symbolize_keys_rec
           @json_wrapper_model = Mrapper::Model.from_serializable_hash(hsh_from_json)
         end
 
         should "be correct" do
-          assert_equal @wrapper_model, @json_wrapper_model
+          assert_equal @wm_r1_1, @json_wrapper_model
+        end
+      end
+    end
+
+    context "and performing a merge with another mongo result model" do
+      setup do
+        @wm_r2_1 = Mrapper::Model.new(MONGODB_MR_RESULT2)
+        @wm_r2_1.id = "xyz"
+      end
+
+      context "with providing one column" do
+        setup do
+          @merge_columns = [:conversions, :clicks]
+          @wm_r1_1.merge!(@wm_r2_1, @merge_columns)
+        end
+
+        should "merge the row conversions" do
+          # this two assert_not_equal provide that the newly "created"
+          # @wm_r1_1 is different from itself before the merge (because @wm_r1_2 is eql with @wm_r1_1)
+          # and that @wm_r1_1 was not just replaced by @wm_r2_1
+          # therefore we just need to check if the changes values that we expect to be in @wm_r1_1 are really there
+          assert_not_equal @wm_r1_1, @wm_r1_2
+          assert_not_equal @wm_r1_1, @wm_r2_1
+
+          check_merged_model(@wm_r1_1, @wm_r2_1, @merge_columns)
         end
       end
     end
@@ -143,12 +175,12 @@ class TestModel < Test::Unit::TestCase
 
   context "building a model from a mongdob mapreduce result without deep copy" do
     setup do
-      @wrapper_model = Mrapper::Model.new(MONGODB_MR_RESULT, :deep_copy => false)
+      @wm_r1_1 = Mrapper::Model.new(MONGODB_MR_RESULT1, :deep_copy => false)
     end
 
     context "looking at the metainformation" do
       setup do
-        @meta_information = @wrapper_model.meta_information
+        @meta_information = @wm_r1_1.meta_information
       end
 
       should "have the correct row size" do
