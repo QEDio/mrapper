@@ -58,8 +58,61 @@ require 'mrapper'
 SimpleCov.start
 
 unless Kernel.const_defined?("MONGODB_MR_RESULT")
-  MONGODB_MR_RESULT =
-      {:cached=>true, :result=>[{"_id"=>{"campaign_product"=>"blockheizkraftwerk"}, "value"=>{"conversions"=>0, "cost"=>0.0, "impressions"=>0, "cr"=>0.0, "cpa"=>0.0, "clicks"=>0}}, {"_id"=>{"campaign_product"=>"erdwaermepumpe"}, "value"=>{"conversions"=>0, "cost"=>0.0, "impressions"=>0, "cr"=>0.0, "cpa"=>0.0, "clicks"=>0}}, {"_id"=>{"campaign_product"=>"fenster"}, "value"=>{"conversions"=>36, "cost"=>486.74, "impressions"=>125732, "cr"=>6.91, "cpa"=>13.52, "clicks"=>521}}, {"_id"=>{"campaign_product"=>"gabelstapler"}, "value"=>{"conversions"=>40, "cost"=>1634.05, "impressions"=>760774, "cr"=>2.89, "cpa"=>40.85, "clicks"=>1382}}, {"_id"=>{"campaign_product"=>"garage"}, "value"=>{"conversions"=>15, "cost"=>229.54, "impressions"=>434840, "cr"=>5.14, "cpa"=>15.3, "clicks"=>292}}, {"_id"=>{"campaign_product"=>"haustueren"}, "value"=>{"conversions"=>0, "cost"=>0.0, "impressions"=>0, "cr"=>0.0, "cpa"=>0.0, "clicks"=>0}}, {"_id"=>{"campaign_product"=>"inkasso"}, "value"=>{"conversions"=>6, "cost"=>203.14, "impressions"=>82691, "cr"=>4.05, "cpa"=>33.86, "clicks"=>148}}, {"_id"=>{"campaign_product"=>"kaffeeautomaten"}, "value"=>{"conversions"=>0, "cost"=>0.0, "impressions"=>0, "cr"=>0.0, "cpa"=>0.0, "clicks"=>0}}, {"_id"=>{"campaign_product"=>"kaltgetraenkeautomaten"}, "value"=>{"conversions"=>0, "cost"=>0.0, "impressions"=>0, "cr"=>0.0, "cpa"=>0.0, "clicks"=>0}}, {"_id"=>{"campaign_product"=>"kopierer"}, "value"=>{"conversions"=>0, "cost"=>0.0, "impressions"=>0, "cr"=>0.0, "cpa"=>0.0, "clicks"=>0}}, {"_id"=>{"campaign_product"=>"käuferportal"}, "value"=>{"conversions"=>1, "cost"=>1.87, "impressions"=>155, "cr"=>2.5, "cpa"=>1.87, "clicks"=>40}}, {"_id"=>{"campaign_product"=>"lohnabrechnung"}, "value"=>{"conversions"=>0, "cost"=>0.0, "impressions"=>0, "cr"=>0.0, "cpa"=>0.0, "clicks"=>0}}, {"_id"=>{"campaign_product"=>"luftwärmepumpe"}, "value"=>{"conversions"=>0, "cost"=>0.0, "impressions"=>0, "cr"=>0.0, "cpa"=>0.0, "clicks"=>0}}, {"_id"=>{"campaign_product"=>"plotter"}, "value"=>{"conversions"=>0, "cost"=>0.0, "impressions"=>0, "cr"=>0.0, "cpa"=>0.0, "clicks"=>0}}, {"_id"=>{"campaign_product"=>"solaranlagen"}, "value"=>{"conversions"=>151, "cost"=>2523.09, "impressions"=>3868089, "cr"=>3.35, "cpa"=>16.71, "clicks"=>4510}}, {"_id"=>{"campaign_product"=>"telefonanlagen"}, "value"=>{"conversions"=>0, "cost"=>0.0, "impressions"=>0, "cr"=>0.0, "cpa"=>0.0, "clicks"=>0}}, {"_id"=>{"campaign_product"=>"treppenlift"}, "value"=>{"conversions"=>19, "cost"=>1822.02, "impressions"=>329370, "cr"=>6.35, "cpa"=>95.9, "clicks"=>299}}, {"_id"=>{"campaign_product"=>"videoproduktionen"}, "value"=>{"conversions"=>0, "cost"=>0.0, "impressions"=>0, "cr"=>0.0, "cpa"=>0.0, "clicks"=>0}}, {"_id"=>{"campaign_product"=>"waermebildkamera"}, "value"=>{"conversions"=>0, "cost"=>0.0, "impressions"=>0, "cr"=>0.0, "cpa"=>0.0, "clicks"=>0}}, {"_id"=>{"campaign_product"=>"wasserspender"}, "value"=>{"conversions"=>17, "cost"=>316.28, "impressions"=>123158, "cr"=>7.83, "cpa"=>18.6, "clicks"=>217}}, {"_id"=>{"campaign_product"=>"webdesign"}, "value"=>{"conversions"=>0, "cost"=>0.0, "impressions"=>0, "cr"=>0.0, "cpa"=>0.0, "clicks"=>0}}, {"_id"=>{"campaign_product"=>"wintergarten"}, "value"=>{"conversions"=>0, "cost"=>0.0, "impressions"=>11, "cr"=>0.0, "cpa"=>0.0, "clicks"=>0}}]}
+  MONGODB_MR_RESULT1 = {
+    :cached=>true,
+    :result=>[
+      {"_id"=>{"campaign_product"=>"blockheizkraftwerk"},     "value"=>{"conversions"=>0,   "cost"=>0.0,      "impressions"=>0, "cr"=>0.0, "cpa"=>0.0, "clicks"=>0}},
+      {"_id"=>{"campaign_product"=>"erdwaermepumpe"},         "value"=>{"conversions"=>0,   "cost"=>0.0,      "impressions"=>0, "cr"=>0.0, "cpa"=>0.0, "clicks"=>0}},
+      {"_id"=>{"campaign_product"=>"fenster"},                "value"=>{"conversions"=>36,  "cost"=>486.74,   "impressions"=>125732, "cr"=>6.91, "cpa"=>13.52, "clicks"=>521}},
+      {"_id"=>{"campaign_product"=>"gabelstapler"},           "value"=>{"conversions"=>40,  "cost"=>1634.05,  "impressions"=>760774, "cr"=>2.89, "cpa"=>40.85, "clicks"=>1382}},
+      {"_id"=>{"campaign_product"=>"garage"},                 "value"=>{"conversions"=>15,  "cost"=>229.54,   "impressions"=>434840, "cr"=>5.14, "cpa"=>15.3, "clicks"=>292}},
+      {"_id"=>{"campaign_product"=>"haustueren"},             "value"=>{"conversions"=>0,   "cost"=>0.0,      "impressions"=>0, "cr"=>0.0, "cpa"=>0.0, "clicks"=>0}},
+      {"_id"=>{"campaign_product"=>"inkasso"},                "value"=>{"conversions"=>6,   "cost"=>203.14,   "impressions"=>82691, "cr"=>4.05, "cpa"=>33.86, "clicks"=>148}},
+      {"_id"=>{"campaign_product"=>"kaffeeautomaten"},        "value"=>{"conversions"=>0,   "cost"=>0.0,      "impressions"=>0, "cr"=>0.0, "cpa"=>0.0, "clicks"=>0}},
+      {"_id"=>{"campaign_product"=>"kaltgetraenkeautomaten"}, "value"=>{"conversions"=>0,   "cost"=>0.0,      "impressions"=>0, "cr"=>0.0, "cpa"=>0.0, "clicks"=>0}},
+      {"_id"=>{"campaign_product"=>"kopierer"},               "value"=>{"conversions"=>0,   "cost"=>0.0,      "impressions"=>0, "cr"=>0.0, "cpa"=>0.0, "clicks"=>0}},
+      {"_id"=>{"campaign_product"=>"käuferportal"},           "value"=>{"conversions"=>1,   "cost"=>1.87,     "impressions"=>155, "cr"=>2.5, "cpa"=>1.87, "clicks"=>40}},
+      {"_id"=>{"campaign_product"=>"lohnabrechnung"},         "value"=>{"conversions"=>0,   "cost"=>0.0,      "impressions"=>0, "cr"=>0.0, "cpa"=>0.0, "clicks"=>0}},
+      {"_id"=>{"campaign_product"=>"luftwärmepumpe"},         "value"=>{"conversions"=>0,   "cost"=>0.0,      "impressions"=>0, "cr"=>0.0, "cpa"=>0.0, "clicks"=>0}},
+      {"_id"=>{"campaign_product"=>"plotter"},                "value"=>{"conversions"=>0,   "cost"=>0.0,      "impressions"=>0, "cr"=>0.0, "cpa"=>0.0, "clicks"=>0}},
+      {"_id"=>{"campaign_product"=>"solaranlagen"},           "value"=>{"conversions"=>151, "cost"=>2523.09,  "impressions"=>3868089, "cr"=>3.35, "cpa"=>16.71, "clicks"=>4510}},
+      {"_id"=>{"campaign_product"=>"telefonanlagen"},         "value"=>{"conversions"=>0,   "cost"=>0.0,      "impressions"=>0, "cr"=>0.0, "cpa"=>0.0, "clicks"=>0}},
+      {"_id"=>{"campaign_product"=>"treppenlift"},            "value"=>{"conversions"=>19,  "cost"=>1822.02,  "impressions"=>329370, "cr"=>6.35, "cpa"=>95.9, "clicks"=>299}},
+      {"_id"=>{"campaign_product"=>"videoproduktionen"},      "value"=>{"conversions"=>0,   "cost"=>0.0,      "impressions"=>0, "cr"=>0.0, "cpa"=>0.0, "clicks"=>0}},
+      {"_id"=>{"campaign_product"=>"waermebildkamera"},       "value"=>{"conversions"=>0,   "cost"=>0.0,      "impressions"=>0, "cr"=>0.0, "cpa"=>0.0, "clicks"=>0}},
+      {"_id"=>{"campaign_product"=>"wasserspender"},          "value"=>{"conversions"=>17,  "cost"=>316.28,   "impressions"=>123158, "cr"=>7.83, "cpa"=>18.6, "clicks"=>217}},
+      {"_id"=>{"campaign_product"=>"webdesign"},              "value"=>{"conversions"=>0,   "cost"=>0.0,      "impressions"=>0, "cr"=>0.0, "cpa"=>0.0, "clicks"=>0}},
+      {"_id"=>{"campaign_product"=>"wintergarten"},           "value"=>{"conversions"=>0,   "cost"=>0.0,      "impressions"=>11, "cr"=>0.0, "cpa"=>0.0, "clicks"=>0}}
+    ]
+  }
+
+  MONGODB_MR_RESULT2 = {
+    :cached=>true,
+    :result=>[
+      {"_id"=>{"campaign_product"=>"blockheizkraftwerk"},     "value"=>{"conversions"=>10,  "cost"=>0.0,  "impressions"=>1000,  "cr"=>0.11, "cpa"=>1.01,  "clicks"=>111}},
+      {"_id"=>{"campaign_product"=>"erdwaermepumpe"},         "value"=>{"conversions"=>20,  "cost"=>1.0,  "impressions"=>2000,  "cr"=>0.22, "cpa"=>2.01,  "clicks"=>222}},
+      {"_id"=>{"campaign_product"=>"fenster"},                "value"=>{"conversions"=>30,  "cost"=>2.0,  "impressions"=>3000,  "cr"=>0.33, "cpa"=>3.01,  "clicks"=>333}},
+      {"_id"=>{"campaign_product"=>"gabelstapler"},           "value"=>{"conversions"=>40,  "cost"=>3.0,  "impressions"=>4000,  "cr"=>0.44, "cpa"=>4.01,  "clicks"=>444}},
+      {"_id"=>{"campaign_product"=>"garage"},                 "value"=>{"conversions"=>50,  "cost"=>4.0,  "impressions"=>5000,  "cr"=>0.55, "cpa"=>5.01,  "clicks"=>555}},
+      {"_id"=>{"campaign_product"=>"haustueren"},             "value"=>{"conversions"=>60,  "cost"=>5.0,  "impressions"=>6000,  "cr"=>0.66, "cpa"=>6.01,  "clicks"=>666}},
+      {"_id"=>{"campaign_product"=>"inkasso"},                "value"=>{"conversions"=>70,  "cost"=>6.0,  "impressions"=>7000,  "cr"=>0.77, "cpa"=>7.01,  "clicks"=>777}},
+      {"_id"=>{"campaign_product"=>"kaffeeautomaten"},        "value"=>{"conversions"=>80,  "cost"=>7.0,  "impressions"=>8000,  "cr"=>0.88, "cpa"=>8.01,  "clicks"=>888}},
+      {"_id"=>{"campaign_product"=>"kaltgetraenkeautomaten"}, "value"=>{"conversions"=>90,  "cost"=>8.0,  "impressions"=>9000,  "cr"=>0.99, "cpa"=>9.01,  "clicks"=>999}},
+      {"_id"=>{"campaign_product"=>"kopierer"},               "value"=>{"conversions"=>100, "cost"=>9.0,  "impressions"=>10000, "cr"=>1.11, "cpa"=>10.01, "clicks"=>1110}},
+      {"_id"=>{"campaign_product"=>"käuferportal"},           "value"=>{"conversions"=>110, "cost"=>11.0, "impressions"=>11000, "cr"=>1.22, "cpa"=>11.01, "clicks"=>1221}},
+      {"_id"=>{"campaign_product"=>"lohnabrechnung"},         "value"=>{"conversions"=>120, "cost"=>12.0, "impressions"=>12000, "cr"=>1.33, "cpa"=>12.01, "clicks"=>1332}},
+      {"_id"=>{"campaign_product"=>"luftwärmepumpe"},         "value"=>{"conversions"=>130, "cost"=>13.0, "impressions"=>13000, "cr"=>1.44, "cpa"=>13.01, "clicks"=>1443}},
+      {"_id"=>{"campaign_product"=>"plotter"},                "value"=>{"conversions"=>140, "cost"=>14.0, "impressions"=>14000, "cr"=>1.55, "cpa"=>14.01, "clicks"=>1554}},
+      {"_id"=>{"campaign_product"=>"solaranlagen"},           "value"=>{"conversions"=>150, "cost"=>15.0, "impressions"=>15000, "cr"=>1.66, "cpa"=>15.01, "clicks"=>1665}},
+      {"_id"=>{"campaign_product"=>"telefonanlagen"},         "value"=>{"conversions"=>160, "cost"=>16.0, "impressions"=>16000, "cr"=>1.77, "cpa"=>16.01, "clicks"=>1776}},
+      {"_id"=>{"campaign_product"=>"treppenlift"},            "value"=>{"conversions"=>170, "cost"=>17.0, "impressions"=>17000, "cr"=>1.88, "cpa"=>17.01, "clicks"=>1887}},
+      {"_id"=>{"campaign_product"=>"videoproduktionen"},      "value"=>{"conversions"=>180, "cost"=>18.0, "impressions"=>18000, "cr"=>1.99, "cpa"=>18.01, "clicks"=>1998}},
+      {"_id"=>{"campaign_product"=>"waermebildkamera"},       "value"=>{"conversions"=>190, "cost"=>19.0, "impressions"=>19000, "cr"=>2.11, "cpa"=>19.01, "clicks"=>2109}},
+      {"_id"=>{"campaign_product"=>"wasserspender"},          "value"=>{"conversions"=>200, "cost"=>21.0, "impressions"=>20000, "cr"=>2.22, "cpa"=>20.01, "clicks"=>2220}},
+      {"_id"=>{"campaign_product"=>"webdesign"},              "value"=>{"conversions"=>210, "cost"=>22.0, "impressions"=>21000, "cr"=>2.33, "cpa"=>21.01, "clicks"=>2331}},
+      {"_id"=>{"campaign_product"=>"wintergarten"},           "value"=>{"conversions"=>220, "cost"=>23.0, "impressions"=>22000, "cr"=>2.44, "cpa"=>22.01, "clicks"=>2442}}
+    ]
+  }
 
   MODEL_MONDGODB_RESULT_EMIT_KEY_KEYS = [{:key=>:campaign_product, :formatted_key=>"campaign_product"}]
   MODEL_MONDGODB_RESULT_EMIT_VALUE_KEYS =
@@ -144,4 +197,33 @@ end
 
 class Test::Unit::TestCase
   include Mrapper
+  def check_merged_model(merged, was_merged_into, merge_columns)
+    merge_columns.each do |merge_column|
+      # iterate over all rows to check that we have merged (replaced) )conversions everywhere
+      merged.result_rows.each_with_index do |merged_row, i|
+        # get the corresponding row in the other model
+        # there is also the method get_row, but for now we omit it
+        # was_merged_into_row = @was_merged_into.get_row(merged_row, @merge_columns)
+        was_merged_into_row = was_merged_into.result_rows[i]
+        merged_col = was_merged_into_col = nil
+
+        merged_row.mr_emit_values.each do |kv|
+          if kv.key.eql?(merge_column)
+            merged_col = kv
+            break
+          end
+        end
+
+        was_merged_into_row.mr_emit_values.each do |kv|
+          if kv.key.eql?(merge_column)
+            was_merged_into_col = kv
+            break
+          end
+        end
+
+        assert_equal was_merged_into_col.key, merged_col.key
+        assert_equal was_merged_into_col.value, merged_col.value
+      end
+    end
+  end
 end

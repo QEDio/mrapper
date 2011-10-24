@@ -63,9 +63,14 @@ module Mrapper
     end
 
 
-    def merge(other, columns = nil)
+    def merge!(other, ext_columns)
+      columns = Array(ext_columns)
+      raise Exception.new("No merge can be performed if the columns to merge are unknown!") if columns.size == 0
+      
       other.result_rows.each do |row|
         my_row = get_row(row, columns)
+        next if my_row.nil?
+        my_row.merge!(row, columns)
       end
 
     end
@@ -144,6 +149,15 @@ module Mrapper
       eql?(other)
     end
 
+    def merge!(other, columns)
+      mr_emit_values.each do |column|
+        if columns.include?(column.key)
+          other_column = other.get_emit_value(column)
+          column.value = other_column.value
+        end
+      end
+    end
+
     # TODO: name
     # returns true if:
     #   * all columns are present, if columns is nil all columns must match, if empty arry, non must must match
@@ -164,6 +178,7 @@ module Mrapper
 
         other.mr_emit_values.each do |emit_value|
           next if !columns.include?(emit_value.key)
+          #puts "key: #{emit_value.key}"
           equal = has_emit_value?(emit_value)
           break if equal == false
         end
@@ -172,16 +187,24 @@ module Mrapper
       equal
     end
 
-    def has_emit_key?(emit_key)
+    def get_emit_key(emit_key)
       emit_key = mr_emit_keys.select{|ek| ek.eql1?(emit_key)}
       raise Exception.new("Boy this is not allowed. There are #{emit_key.size} emit_keys for emit_key #{emit_key.inspect}") if emit_key.size > 1
-      emit_key.size == 1
+      return emit_key[0]
+    end
+
+    def has_emit_key?(emit_key)
+      !get_emit_key(emit_key).nil?
+    end
+
+    def get_emit_value(emit_value)
+      emit_value = mr_emit_values.select{|ev| ev.eql1?(emit_value)}
+      raise Exception.new("Boy this is not allowed. There are #{emit_value.size} emit_values for emit_value #{emit_value.inspect}") if emit_value.size > 1
+      return emit_value[0]
     end
 
     def has_emit_value?(emit_value)
-      emit_value = mr_emit_values.select{|ev| ev.eql1?(emit_value)}
-      raise Exception.new("Boy this is not allowed. There are #{emit_value.size} emit_values for emit_value #{emit_value.inspect}") if emit_value.size > 1
-      emit_value.size == 1
+      !get_emit_value(emit_value).nil?
     end
   end
 
@@ -248,7 +271,7 @@ module Mrapper
       eql?(other)
     end
 
-    def eql1(other)
+    def eql1?(other)
       other.key.eql?(key) && other.value.eql?(value)
     end
   end
@@ -257,7 +280,7 @@ module Mrapper
   end
 
   class MrEmitValue < MrEmitBase
-    def eql1(other)
+    def eql1?(other)
       other.key.eql?(key)
     end
   end

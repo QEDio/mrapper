@@ -120,5 +120,15 @@ module Mrapper
     def ==(other)
       eql?(other)
     end
+
+    # TODO: the id, subid and what not needs be better, so we can easily match results/models together
+    def merge!(other, ext_columns)
+      columns = Array(ext_columns)
+      raise Exception.new("No merge can be performed if the columns to merge are unknown!") if columns.size == 0
+
+      results.each_with_index do |result, i|
+        result.merge!(other.results[i], columns)
+      end
+    end
   end
 end
