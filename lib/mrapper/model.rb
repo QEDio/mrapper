@@ -63,16 +63,37 @@ module Mrapper
     end
 
 
-    def merge!(other, ext_columns)
+    # TODO: Merge needs to be a little better
+    # TODO: consider merging a model with different results, the results from the 'other' would not be in the merged model
+    # TODO: this is not so good, because its not a merge, its a replace if found, otherwise do nothing :(
+    def merge!(other, ext_columns, ext_options = {})
+      options = default_merge_options.merge(ext_options)
+
       columns = Array(ext_columns)
       raise Exception.new("No merge can be performed if the columns to merge are unknown!") if columns.size == 0
       
-      other.result_rows.each do |row|
-        my_row = get_row(row, columns)
-        next if my_row.nil?
-        my_row.merge!(row, columns)
-      end
+      result_rows.each do |row|
+        other_row = other.get_row(row, columns)
 
+        if !other_row.nil?
+          row.merge!(other_row, columns)
+        else
+          if(options[:replace_if_not_found])
+            row.mr_emit_values.each do |column|
+              if( columns.include?(column.key) )
+                column.value = options[:replace_with_if_not_found]
+              end
+            end
+          end
+        end
+      end
+    end
+
+    def default_merge_options
+      {
+        :replace_if_not_found => true,
+        :replace_with_if_not_found => 0
+      }
     end
 
     def get_row(row, columns = nil)
@@ -228,7 +249,7 @@ module Mrapper
         params[:value],
         :formatted_key      => params[:formatted_key],
         :formatted_value    => params[:formatted_value],
-        :css                => params[:css],
+        :css                => params[:css]
         #:derived_values     => params[:derived_values]
       )
     end
