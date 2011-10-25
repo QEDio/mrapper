@@ -19,10 +19,10 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_dependency 'rake'
-  s.add_dependency 'bson_ext'
-  s.add_dependency 'bzip2-ruby'
-  s.add_dependency 'yajl-ruby'
+  s.add_runtime_dependency 'rake'
+  s.add_runtime_dependency 'bson_ext'
+  s.add_runtime_dependency 'bzip2-ruby'
+  s.add_runtime_dependency 'yajl-ruby'
 
   s.add_development_dependency 'shoulda'
   s.add_development_dependency 'spork'

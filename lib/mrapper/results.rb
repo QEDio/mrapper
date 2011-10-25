@@ -122,13 +122,22 @@ module Mrapper
     end
 
     # TODO: the id, subid and what not needs be better, so we can easily match results/models together
-    def merge!(other, ext_columns)
+    def merge!(other, ext_columns, ext_options = {})
+      options = default_merge_options.merge(ext_options)
+
       columns = Array(ext_columns)
       raise Exception.new("No merge can be performed if the columns to merge are unknown!") if columns.size == 0
 
       results.each_with_index do |result, i|
-        result.merge!(other.results[i], columns)
+        result.merge!(other.results[i], columns, options)
       end
+    end
+
+    def default_merge_options
+      {
+        :replace_if_not_found => true,
+        :replace_with_if_not_found => 0
+      }
     end
   end
 end
