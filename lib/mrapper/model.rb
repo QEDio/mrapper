@@ -231,14 +231,12 @@ module Mrapper
 
   class MrEmitBase
     attr_accessor :key
-    attr_accessor :value
+    attr_reader   :value
     # TODO: those emlements should be inserted by external code and also retrieved by them,
     # TODO: somehow like a plugin
     attr_accessor :formatted_key
-    attr_accessor :formatted_value
+    attr_reader :formatted_value
     attr_accessor :css
-    #attr_accessor :derived_values
-
 
     def self.from_serializable_hash(params)
       raise RuntimeError.new("Need the key/value pair for key: 'key'") unless params.key?(:key)
@@ -250,7 +248,6 @@ module Mrapper
         :formatted_key      => params[:formatted_key],
         :formatted_value    => params[:formatted_value],
         :css                => params[:css]
-        #:derived_values     => params[:derived_values]
       )
     end
 
@@ -263,14 +260,30 @@ module Mrapper
       @formatted_value      = options[:formatted_value] || value
       # TODO: is there a better way to avoid getting nil for @css if :css => nil is passed in ext_options?
       @css                  = options[:css] || default_options[:css]
-      #@derived_values       = options[:derived_values] || default_options[:derived_values]
     end
 
     def default_options
       {
-        :css            => {},
-        #:derived_values => {}
+        :css            => {}
       }
+    end
+
+    def value=(v)
+      # check for infinity and convert to NaN
+      if( v.eql?(1.0/0) )
+        v = 0.0/0.0
+      end
+
+      @value = v
+    end
+
+    def formatted_value=(fv)
+      # check for infinity and convert to NaN
+      if( fv.eql?(1.0/0) )
+        fv = 0.0/0.0
+      end
+
+      @formatted_value = fv
     end
 
     def serializable_hash
@@ -280,7 +293,6 @@ module Mrapper
         :formatted_key      => formatted_key,
         :formatted_value    => formatted_value,
         :css                => css,
-        #:derived_values     => derived_values
       }
     end
 
@@ -326,8 +338,8 @@ module Mrapper
 
     def serializable_hash
       {
-        :key => key,
-        :formatted_key => formatted_key
+        :key            => key,
+        :formatted_key  => formatted_key
       }
     end
 
