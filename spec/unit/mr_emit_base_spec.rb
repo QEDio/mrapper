@@ -14,4 +14,13 @@ describe Mrapper::MrEmitBase do
       mr_emit_base.value.should == 0
     end
   end
+
+  context "creating a mr_emit_base object with params" do
+    let(:mr_emit_keys) { Mrapper::MrEmitBase.new("key", Float::NAN, :formatted_value => Float::INFINITY) }
+
+    it "sets NAN and INFINITY to 0" do
+      mr_emit_keys.value.should == 0
+      mr_emit_keys.formatted_value.should == 0
+    end
+  end
 end
