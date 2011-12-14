@@ -269,21 +269,25 @@ module Mrapper
     end
 
     def value=(v)
-      # check for infinity and convert to NaN
-      if( v.eql?(1.0/0) )
-        v = 0.0/0.0
+      if( v.is_a?(Float) )
+        # check for infinity and convert to NaN
+        if( v.eql?(Float::INFINITY) || v.nan? )
+          v = 0
+        end
       end
 
       @value = v
     end
 
-    def formatted_value=(fv)
-      # check for infinity and convert to NaN
-      if( fv.eql?(1.0/0) )
-        fv = 0.0/0.0
+    def formatted_value=(v)
+      if( v.is_a?(Float) )
+        # check for infinity and convert to NaN
+        if( v.eql?(Float::INFINITY) || v.nan? )
+          v = 0
+        end
       end
 
-      @formatted_value = fv
+      @formatted_value = v
     end
 
     def serializable_hash
