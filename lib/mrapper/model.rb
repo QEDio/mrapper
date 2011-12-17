@@ -230,12 +230,10 @@ module Mrapper
   end
 
   class MrEmitBase
-    attr_accessor :key
-    attr_reader   :value
+    attr_accessor :key, :formatted_key
+    attr_reader   :value, :formatted_value
     # TODO: those emlements should be inserted by external code and also retrieved by them,
     # TODO: somehow like a plugin
-    attr_accessor :formatted_key
-    attr_reader :formatted_value
     attr_accessor :css
 
     def self.from_serializable_hash(params)
@@ -254,10 +252,10 @@ module Mrapper
     def initialize(key, value, ext_options = {})
       options               = default_options.merge(ext_options)
 
-      @key                  = key.to_s.to_sym
-      @value                = value
-      @formatted_key        = (options[:formatted_key] || key).to_s
-      @formatted_value      = options[:formatted_value] || value
+      self.key                  = key.to_s.to_sym
+      self.value                = value
+      self.formatted_key        = (options[:formatted_key] || key).to_s
+      self.formatted_value      = options[:formatted_value] || value
       # TODO: is there a better way to avoid getting nil for @css if :css => nil is passed in ext_options?
       @css                  = options[:css] || default_options[:css]
     end
@@ -269,21 +267,25 @@ module Mrapper
     end
 
     def value=(v)
-      # check for infinity and convert to NaN
-      if( v.eql?(1.0/0) )
-        v = 0.0/0.0
+      if( v.is_a?(Float) )
+        # check for infinity and convert to NaN
+        if( v.eql?(Float::INFINITY) || v.nan? )
+          v = 0
+        end
       end
 
       @value = v
     end
 
-    def formatted_value=(fv)
-      # check for infinity and convert to NaN
-      if( fv.eql?(1.0/0) )
-        fv = 0.0/0.0
+    def formatted_value=(v)
+      if( v.is_a?(Float) )
+        # check for infinity and convert to NaN
+        if( v.eql?(Float::INFINITY) || v.nan? )
+          v = 0
+        end
       end
 
-      @formatted_value = fv
+      @formatted_value = v
     end
 
     def serializable_hash
