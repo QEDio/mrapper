@@ -7,6 +7,7 @@ module Mrapper
     attr_accessor :id
     # sub_id is the part thats different for each model with the same general query
     attr_accessor :sub_id
+    attr_accessor :result_meta_info
 
     def self.from_serializable_hash(hsh, options = {})
       new(hsh, options)
@@ -25,21 +26,22 @@ module Mrapper
       data          = ext_data
 
       # initialize with default values
-      @results      = options[:results]
-      @id           = options[:id]
-      @sub_id       = options[:sub_id]
+      @results            = options[:results]
+      @id                 = options[:id]
+      @sub_id             = options[:sub_id]
+      @result_meta_info   = options[:result_meta_info_ext]
 
       # deep copy requested,
       # ATTENTION: This will be slow!
-      if( !data.nil? && options[:deep_copy] )
+      if !data.nil? && options[:deep_copy]
         data = Marshal.load(Marshal.dump(data))
       end
 
-      if( !data.nil? && options[:convert_to_symbols] )
+      if !data.nil? && options[:convert_to_symbols]
         data = data.symbolize_keys_rec
       end
 
-      if( data )
+      if data
         add_results( data[:results]||data["results"], options )  if( data[:results] || data["results"] )
 
         @id             = data[:id] || data["id"]
@@ -52,16 +54,18 @@ module Mrapper
       {
         :convert_to_symbols   => true,
         :deep_copy            => true,
-        :results      => []
+        :results              => [],
+        :result_meta_info_ext => {order: [], data: {}}
       }
     end
 
     def serializable_hash
       {
-        :results    => results.collect(&:serializable_hash),
-        :id         => id,
-        :sub_id     => sub_id,
-        :type       => self.class.to_s
+        :results                => results.collect(&:serializable_hash),
+        :result_meta_info_ext   => result_meta_info_ext,
+        :id                     => id,
+        :sub_id                 => sub_id,
+        :type                   => self.class.to_s
       }
     end
 
@@ -84,6 +88,33 @@ module Mrapper
       }
     end
 
+    def result_meta_info_ext
+      {
+        orig: @result_meta_info,
+        tupel: generate_tupel()
+      }
+    end
+
+    def generate_tupel()
+      data    = @result_meta_info[:data]
+      order   = @result_meta_info[:order]
+      arr     = []
+
+      generate_tupel_rec(order, data, '', arr)
+      return arr
+    end
+
+    def generate_tupel_rec(order, data, str, arr)
+      if order.blank? || order[0].blank?
+        arr << str[0..-2]
+        return
+      end
+
+      data[order[0]].each do |d|
+        s = generate_tupel_rec(order[1..-1], data, d + '_' + str, arr)
+      end
+    end
+
     # yeah, currently just nothing, probably overkill again
     def extract_options_for_add_results(ext_options)
       options = {}
@@ -92,13 +123,15 @@ module Mrapper
     end
 
     def add_result(result, options)
-      unless( result.nil? )
-        if( result.is_a?(Model) )
+      unless result.nil?
+        if result.is_a?(Model)
           results << result
-        elsif( result.is_a?(Results) )
-          results << result
-        elsif( result.is_a?(Hash) )
-          if( result[:type].eql?(self.class.to_s))
+          extract_meta_information(result)
+        elsif result.is_a?(Results)
+          #results << result
+          raise "Me I dont want to nest results within results"
+        elsif result.is_a?(Hash)
+          if result[:type].eql?(self.class.to_s)
             results << self.class.from_serializable_hash(result)
           else
             results << Model.from_serializable_hash(result, options)
@@ -107,6 +140,19 @@ module Mrapper
           raise Exception.new("I'm sorry but I don't know how to deserialize the datatype #{result.class} for result")
         end
       end
+    end
+
+    def extract_meta_information(result)
+      result.result_rows.each do |r|
+        r.mr_emit_keys.each do |emit_key|
+          @result_meta_info[:data][emit_key.key] ||= []
+          @result_meta_info[:data][emit_key.key] << emit_key.value if !@result_meta_info[:data][emit_key.key].include?(emit_key.value)
+
+          @result_meta_info[:order] << emit_key.key if !@result_meta_info[:order].include?(emit_key.key)
+        end
+      end
+
+      return true
     end
 
     def compress
