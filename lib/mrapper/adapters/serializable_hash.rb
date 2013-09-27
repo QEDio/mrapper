@@ -29,7 +29,7 @@ module Mrapper
         result_rows = []
         data = mr_result[RESULT_ROWS]
 
-        if( !data.nil? && data.size > 0)
+        if !data.nil? && data.size > 0
           result_rows = data.collect{|row| MrRow.new(row, :adapter => self)}
         end
 
@@ -48,7 +48,7 @@ module Mrapper
         raise RuntimeError.new("Provided Parameter 'row' needs to be a hash, but is #{row.class}") if !row.is_a?(Hash)
 
         ret_val = []
-        if( row.key?(accessor))
+        if row.key?(accessor)
           ret_val = row[accessor].collect{|emit_value| build_class.from_serializable_hash(emit_value)}
         end
         return ret_val
@@ -65,10 +65,10 @@ module Mrapper
       def self.meta_emit_base(data, value_accessor, build_class)
         ret_val = []
 
-        if( !data.nil? and data.is_a?(Hash) and data.size > 0 and data.key?(META_INFORMATION))
+        if !data.nil? and data.is_a?(Hash) and data.size > 0 and data.key?(META_INFORMATION)
           meta_data = data[META_INFORMATION]
 
-          if( meta_data.key?(value_accessor) )
+          if meta_data.key?(value_accessor)
             ret_val = meta_data[value_accessor].collect{|emit_value_key| build_class.from_serializable_hash( emit_value_key )}
           end
         end

@@ -22,11 +22,11 @@ module Mrapper
       @id             = data[:id] || data["id"] || options[:id] || options["id"]
       @sub_id         = data[:sub_id] || data["sub_id"] || options[:sub_id] || options["sub_id"]
 
-      if( !data.nil? && options[:deep_copy] )
+      if !data.nil? && options[:deep_copy]
         data = Marshal.load(Marshal.dump(data))
       end
       
-      if( options[:convert_to_symbols])
+      if options[:convert_to_symbols]
         data = data.symbolize_keys_rec
       end
       
@@ -78,9 +78,9 @@ module Mrapper
         if !other_row.nil?
           row.merge!(other_row, columns)
         else
-          if(options[:replace_if_not_found])
+          if options[:replace_if_not_found]
             row.mr_emit_values.each do |column|
-              if( columns.include?(column.key) )
+              if columns.include?(column.key)
                 column.value = options[:replace_with_if_not_found]
               end
             end
@@ -131,26 +131,19 @@ module Mrapper
   end
 
   class MrRow
-    attr_accessor :mr_emit_keys, :mr_emit_values, :adapter, :bollinger
+    attr_accessor :mr_emit_keys, :mr_emit_values, :adapter
 
     def initialize(row, ext_options = {})
       options             = default_options.merge(ext_options)
 
       @adapter            = options[:adapter]
-      # this is not in the spirit of adapters
-      if( (row[:bollinger] || row["bollinger"]) && !(row[:bollinger].nil?||row["bollinger"].nil?) )
-        @bollinger = row[:bollinger] || row["bollinger"]
-      else
-        @bollinger = options[:bollinger]
-      end
       @mr_emit_keys       = adapter.emit_key_keys(row)
       @mr_emit_values     = adapter.emit_value_keys(row)
     end
 
     def default_options
       {
-        :adapter              => Mrapper::Adapter::Mongodb,
-        :bollinger            => ""
+        :adapter              => Mrapper::Adapter::Mongodb
       }
     end
 
@@ -158,7 +151,6 @@ module Mrapper
       {
         :mr_emit_keys       => mr_emit_keys.collect(&:serializable_hash),
         :mr_emit_values     => mr_emit_values.collect(&:serializable_hash),
-        :bollinger          => bollinger
       }
     end
 
@@ -245,7 +237,6 @@ module Mrapper
         params[:value],
         :formatted_key      => params[:formatted_key],
         :formatted_value    => params[:formatted_value],
-        :css                => params[:css]
       )
     end
 
@@ -262,14 +253,13 @@ module Mrapper
 
     def default_options
       {
-        :css            => {}
       }
     end
 
     def value=(v)
-      if( v.is_a?(Float) )
+      if v.is_a?(Float)
         # check for infinity and convert to NaN
-        if( v.eql?(Float::INFINITY) || v.nan? )
+        if v.eql?(Float::INFINITY) || v.nan?
           v = 0
         end
       end
@@ -278,9 +268,9 @@ module Mrapper
     end
 
     def formatted_value=(v)
-      if( v.is_a?(Float) )
+      if v.is_a?(Float)
         # check for infinity and convert to NaN
-        if( v.eql?(Float::INFINITY) || v.nan? )
+        if v.eql?(Float::INFINITY) || v.nan?
           v = 0
         end
       end
@@ -292,9 +282,8 @@ module Mrapper
       {
         :key                => key,
         :value              => value,
-        :formatted_key      => formatted_key,
-        :formatted_value    => formatted_value,
-        :css                => css,
+        #:formatted_key      => formatted_key,
+        #:formatted_value    => formatted_value,
       }
     end
 
@@ -341,7 +330,7 @@ module Mrapper
     def serializable_hash
       {
         :key            => key,
-        :formatted_key  => formatted_key
+        #:formatted_key  => formatted_key
       }
     end
 
