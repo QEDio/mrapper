@@ -111,7 +111,7 @@ module Mrapper
       end
 
       data[order[0]].each do |d|
-        s = generate_tupel_rec(order[1..-1], data, d + '_' + str, arr)
+        s = generate_tupel_rec(order[1..-1], data, d.to_s + '_' + str, arr)
       end
     end
 
